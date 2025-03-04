@@ -21,4 +21,6 @@ from .views import save_location
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('save-location/', save_location, name='save_location'),
+    path('', home, name='home'),
+    
 ]
