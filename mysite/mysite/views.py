@@ -1,8 +1,14 @@
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core.mail import send_mail
 
+# For GET request: display the HTML page
+def home(request):
+    return render(request, 'home.html')
+
+# For POST request: save location and send email
 @csrf_exempt
 def save_location(request):
     if request.method == "POST":
@@ -17,8 +23,8 @@ def save_location(request):
         subject = "Live Location Update"
         message = f"User's Location:\nLatitude: {latitude}\nLongitude: {longitude}\n\nView on Google Maps: {google_maps_link}"
 
-        send_mail(subject, message, "your-email@gmail.com", ["your-email@gmail.com"])
+        send_mail(subject, message, "swapeatmail@gmail.com", ["piyushmodi812@gmail.com"])
 
         return JsonResponse({"message": "Location received and email sent"})
+    
     return JsonResponse({"error": "Invalid request"}, status=400)
-
