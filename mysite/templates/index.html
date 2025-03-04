@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live GPS Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 50px; }
+        button { padding: 10px 20px; font-size: 16px; background: #007bff; color: white; border: none; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h2>Live GPS Tracker</h2>
+    <p>Click the button to start tracking your live location:</p>
+    <button onclick="startTracking()">Start Tracking</button>
+    <p id="location">Location will appear here...</p>
+
+    <script>
+        function startTracking() {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(
+                    function (position) {
+                        let lat = position.coords.latitude;
+                        let lon = position.coords.longitude;
+                        document.getElementById("location").innerHTML = `Latitude: ${lat} <br> Longitude: ${lon}`;
+                        
+                        // Send data to Django backend
+                        fetch('/save-location/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
+                            body: JSON.stringify({ latitude: lat, longitude: lon })
+                        }).then(response => response.json())
+                          .then(data => console.log("Location sent:", data));
+                    },
+                    function (error) {
+                        alert("Error getting location: " + error.message);
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
+        }
+    </script>
+</body>
+</html>
