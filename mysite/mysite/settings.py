@@ -133,8 +133,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'swapeatmail@gmail.com'  # Replace with your email
 EMAIL_HOST_PASSWORD = 'anbr opdy syfm alud'  # Replace with your app password
 DEFAULT_FROM_EMAIL = 'your_email@gmail.com'
-ALLOWED_HOSTS = ['faithful-petrina-tracklocation-71162ef5.koyeb.app/', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['faithful-petrina-tracklocation-71162ef5.koyeb.app', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://faithful-petrina-tracklocation-71162ef5.koyeb.app/' 
+    'https://faithful-petrina-tracklocation-71162ef5.koyeb.app' 
 ]
