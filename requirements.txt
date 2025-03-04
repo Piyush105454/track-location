@@ -1,4 +1,0 @@
-Django==4.2  # Use the latest stable Django version
-requests==2.31.0  # Required for handling API requests
-pytz==2024.1  # Timezone support
-django-cors-headers==4.2.0  # Allow frontend requests (if needed)
