@@ -5,7 +5,7 @@
 ---
 
 ## 📸 Project Preview  
-![Project Screenshot](https://ibb.co/HfcC76J7)  
+![Project Screenshot](https://www.imghippo.com/i/WMnh8448nLI.jpg)  
 
 ---
 
