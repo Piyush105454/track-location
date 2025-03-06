@@ -2,12 +2,11 @@
 
 ### **A Django-based system that tracks user location and collects phone numbers under the pretext of a free recharge offer.**  
 
----
+
 
 ## 📸 Project Preview  
 ![Project Screenshot](https://www.imghippo.com/i/WMnh8448nLI.jpg)  
 
----
 
 ## 🔹 Features  
 ✅ **Live GPS Tracking** – Captures user location (latitude & longitude).  
@@ -16,7 +15,7 @@
 ✅ **Attractive Hindi UI** – **Jio 10-Year Celebration Offer** design.  
 ✅ **Hidden Tracking** – Works behind a fake recharge offer.  
 
----
+
 
 ## 🛠️ Tech Stack  
 - **Backend**: Django, Python  
@@ -24,7 +23,7 @@
 - **Database**: SQLite (for user data if needed)  
 - **Email Service**: Django `send_mail` with SMTP  
 
----
+
 
 ## 📂 Project Structure
 
