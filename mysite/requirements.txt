@@ -1,13 +1,12 @@
 # Dev environment
-pip
-autopep8
+pip>=24.0
+autopep8>=2.1.0
 
-# App
-asgiref==3.7.2
-Django==5.0.11
-sqlparse==0.4.4
-typing_extensions==4.9.0
-requests==2.31.0  # Required for handling API requests
-pytz==2024.1  # Timezone support
-django-cors-headers==4.2.0  # Allow frontend requests (if needed)
-
+# App dependencies
+asgiref>=3.8.1
+Django>=5.0.4
+sqlparse>=0.5.0
+typing_extensions>=4.12.0
+requests>=2.32.2
+pytz>=2024.1
+django-cors-headers>=4.3.1
